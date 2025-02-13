@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Video;
 
 use function Pest\Laravel\get;
@@ -12,10 +13,13 @@ it('gives back successful response for home page', function () {
 
 it('gives back successful response for course details page', function () {
     // Arrange
+
+    $user = User::factory()->create(['role' => 'client']); // Asegurar que el usuario es cliente
+    loginAsUser($user);
     $course = Course::factory()->released()->create();
 
-    // Act
-    get(route('pages.course-details', $course))
+    // Act & Assert
+        get(route('pages.course-details', $course))
         ->assertOk();
 });
 

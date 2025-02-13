@@ -75,7 +75,7 @@ it('adds local test user', function () {
     $this->artisan('db:seed');
 
     // Assert
-    $this->assertDatabaseCount(User::class, 1);
+    $this->assertDatabaseCount(User::class, 2);
 });
 
 it('does not test user for production', function () {

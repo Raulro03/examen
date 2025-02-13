@@ -27,3 +27,19 @@ it('has videos', function () {
         ->toHaveCount(2)
         ->each->toBeInstanceOf(Video::class);
 });
+
+it('is admin', function () {
+    // Arrange
+    $user = User::factory()->create(['role' => 'admin']);
+
+    // Act & Assert
+    expect($user->isAdmin())->toBeTrue();
+});
+
+it('is not admin', function () {
+    // Arrange
+    $user = User::factory()->create(['role' => 'client']);
+
+    // Act & Assert
+    expect($user->isAdmin())->toBeFalse();
+});

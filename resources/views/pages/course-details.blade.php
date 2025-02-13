@@ -38,7 +38,7 @@
                             Buy Now!
                         </a>
                         @else
-                            <p> ya tienes todos los cursos</p>
+                            <p>Ya eres admin, no hace falta comprarlo</p>
                         @endif
                         <h3>Learnings</h3>
                         <ul>

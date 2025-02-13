@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Video;
 
 use Juampi92\TestSEO\TestSEO;
@@ -8,6 +9,9 @@ use function Pest\Laravel\get;
 
 it('does not find unreleased course', function () {
     // Arrange
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     $course = Course::factory()->create();
 
     // Act & Assert
@@ -17,6 +21,10 @@ it('does not find unreleased course', function () {
 
 it('shows course details', function () {
     // Arrange
+
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     $course = Course::factory()->released()->create();
 
     // Act & Assert
@@ -33,6 +41,9 @@ it('shows course details', function () {
 
 it('shows course video count', function () {
     // Arrange
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     $course = Course::factory()
         ->released()
         ->has(Video::factory()->count(3))
@@ -46,6 +57,9 @@ it('shows course video count', function () {
 
 it('includes paddle checkout button', function () {
     // Arrange
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     config()->set('services.paddle.vendor-id', 'vendor-id');
     $course = Course::factory()
         ->released()
@@ -63,6 +77,9 @@ it('includes paddle checkout button', function () {
 
 it('includes a title', function () {
     // Arrange
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     $course = Course::factory()->released()->create();
     $expectedTitle = config('app.name') . ' - ' . $course->title;
 
@@ -77,6 +94,9 @@ it('includes a title', function () {
 
 it('includes social tags', function () {
     // Arrange
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
     $course = Course::factory()->released()->create();
 
     // Act
@@ -93,4 +113,29 @@ it('includes social tags', function () {
         ->openGraph()->description->toBe($course->description)
         ->openGraph()->image->toBe(asset("images/{$course->image_name}"))
         ->twitter()->card->toBe('summary_large_image');
+});
+
+it('muestra el botón de compra solo para clientes', function () {
+    // Arrange: Crear un curso publicado
+    $course = Course::factory()->released()->create([
+        'paddle_product_id' => 'pri_01j449tat6p71xg1yx22pwnrjt',
+    ]);
+
+    // Cliente ve el botón de compra
+    $client = User::factory()->create(['role' => 'client']);
+    loginAsUser($client);
+
+        get(route('pages.course-details', $course))
+        ->assertOk()
+        ->assertSee('Buy Now!')
+        ->assertSee($course->paddle_product_id);
+
+    // Admin NO ve el botón de compra
+    $admin = User::factory()->create(['role' => 'admin']);
+    loginAsUser($admin);
+
+    get(route('pages.course-details', $course))
+        ->assertOk()
+        ->assertDontSee('Buy Now!')
+        ->assertSee('Ya eres admin, no hace falta comprarlo');
 });
