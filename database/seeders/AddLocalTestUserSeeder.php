@@ -16,6 +16,14 @@ class AddLocalTestUserSeeder extends Seeder
                 'name' => 'Test User',
                 'email' => 'test@mail.es',
                 'password' => bcrypt('12345678'),
+                'role' => 'admin'
+            ]);
+
+            User::create([
+                'name' => 'Test User 2',
+                'email' => 'client@mail.es',
+                'password' => bcrypt('12345678'),
+                'role' => 'client'
             ]);
 
             $courses = Course::all();
