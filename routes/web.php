@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\PageCourseDetailsController;
 use App\Http\Controllers\PageDashboardController;
 use App\Http\Controllers\PageHomeController;
@@ -21,13 +22,20 @@ Route::get('/', PageHomeController::class)->name('pages.home');
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', PageDashboardController::class)->name('pages.dashboard');
+    Route::get('/admin_dashboard', AdminDashboardController::class)->name('pages.admin-dashboard');
 });
 
 Route::middleware(['auth', 'role:client'])->group(function () {
-
-
+    Route::get('/client_dashboard', PageDashboardController::class)->name('pages.client-dashboard');
 });
+
+// Ruta para redirigir a la página correcta según el rol del usuario
+Route::get('/dashboard', function () {
+    return redirect(auth()->user()->role === 'admin'
+        ? route('pages.admin-dashboard')
+        : route('pages.client-dashboard'));
+})->middleware(['auth'])->name('dashboard');
+
 
 Route::middleware([
     'auth:sanctum',

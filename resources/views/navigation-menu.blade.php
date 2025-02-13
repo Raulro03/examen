@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('pages.dashboard') }}">
+                    <a href="{{ route('dashboard') }}">
                         <img class="h-8 w-auto sm:h-10"
                              src="{{ asset('images/tv_logo.png') }}"
                              alt="An illustrated TV as logo for DWES-2DAW">
@@ -14,7 +14,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link class="text-white hover:text-yellow-400 hover:border-yellow-400" href="{{ route('pages.dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-jet-nav-link class="text-white hover:text-yellow-400 hover:border-yellow-400" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
@@ -139,7 +139,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link class="text-white" href="{{ route('pages.dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-jet-responsive-nav-link class="text-white" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
         </div>

@@ -18,7 +18,7 @@
             <x-login-link
                 email="test@mail.es"
                 label="Login as Test User"
-                redirect-url="{{ route('pages.dashboard') }}"
+                redirect-url="{{ route('dashboard') }}"
             />
         @endenv
 

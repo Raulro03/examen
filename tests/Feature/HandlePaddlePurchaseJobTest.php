@@ -38,6 +38,7 @@ it('stores paddle purchase', function () {
     assertDatabaseHas(User::class, [
         'email' => 'test@test.es',
         'name' => 'Test User',
+        'role' => 'client',
     ]);
     $user = User::where('email', 'test@test.es')->first();
     assertDatabaseHas(PurchasedCourse::class, [
@@ -76,6 +77,11 @@ it('sends a user email', function () {
     Mail::fake();
     \App\Models\Course::factory()->create([
         'paddle_product_id' => 'pro_01j449j1rwpm6e7y7ts4mp2wn4',
+    ]);
+
+    User::factory()->create([
+        'email' => 'test@test.es',
+        'role' => 'client',
     ]);
 
     // Act
